@@ -20,7 +20,7 @@ const size = {
 };
 
 export const device = {
-  mobileM: `(min-width: ${size.mobileM})`,
+  mobileM: `(max-width: ${size.mobileM})`,
   mobileL: `(min-width: ${size.mobileL})`,
   tablet: `(min-width: ${size.tablet})`,
   laptop: `(min-width: ${size.laptop})`,
@@ -33,21 +33,21 @@ export const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
-
-  /* @media ${device.laptop} {
-    max-width: 800px;
-  }
-
-  @media ${device.desktop} {
-    max-width: 1400px;
-  } */
 `;
 
 export const Body = styled.div`
-  padding: 0 16px;
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 64px;
+  @media ${device.laptop} {
+    padding: 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 64px;
+  }
+
+  @media ${device.mobileM} {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
 `;
 
 export const DateText = styled.p`
