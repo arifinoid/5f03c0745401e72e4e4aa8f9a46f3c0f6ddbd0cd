@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { Provider } from "react-redux";
+import { connect } from "react-redux";
 
 import TabButton from "./components/TabButton";
 import CardMenu from "./components/Card";
@@ -9,68 +9,59 @@ import Location from "./components/Location";
 import { Container, Body, DateText } from "./globalStyle";
 import Header from "./layout/header";
 
-import store from "./redux/store";
-
-const App = () => {
+const App = (props) => {
+  const { cartValues, products } = props.cart;
+  const { eatTime } = props.eatTime;
   const [date, setDate] = useState(Date.now());
-  const [eatTime, setEatTime] = useState("Lunch");
+
   const [location, setLocation] = useState(false);
-  const [cartValue, setCartValue] = useState(0);
 
-  const Pizza = "assets/pizza.jpg";
   return (
-    <Provider store={store}>
-      <Container>
-        <Header
-          setLocSearchToggle={setLocation}
-          dateSelected={date}
-          setDateSelected={setDate}
-        />
-        <TabButton eatTime={eatTime} setEatTime={setEatTime} />
-        <DateText>{dayjs(date).format("dddd, DD MMMM YYYY")}</DateText>
-        <Body>
-          <CardMenu
-            image={Pizza}
-            eatTime={eatTime}
-            cartValue={cartValue}
-            setCartValue={setCartValue}
-            rating={2.5}
-          />
+    <Container>
+      <Header
+        setLocSearchToggle={setLocation}
+        dateSelected={date}
+        setDateSelected={setDate}
+      />
+      <TabButton eatTime={eatTime} />
+      <DateText>{dayjs(date).format("dddd, DD MMMM YYYY")}</DateText>
+      <Body>
+        {products.map((product) => {
+          const {
+            id,
+            productName,
+            image,
+            seller,
+            price,
+            currency,
+            rating,
+            eatTime,
+          } = product;
 
-          <CardMenu
-            image={Pizza}
-            eatTime={eatTime}
-            cartValue={cartValue}
-            setCartValue={setCartValue}
-            rating={3.5}
-          />
-          <CardMenu
-            image={Pizza}
-            eatTime={eatTime}
-            cartValue={cartValue}
-            setCartValue={setCartValue}
-            rating={3.5}
-          />
-          <CardMenu
-            image={Pizza}
-            eatTime={eatTime}
-            cartValue={cartValue}
-            setCartValue={setCartValue}
-            rating={3.5}
-          />
-          <CardMenu
-            image={Pizza}
-            eatTime={eatTime}
-            cartValue={cartValue}
-            setCartValue={setCartValue}
-            rating={3.5}
-          />
-        </Body>
-        {cartValue && <Cart cartValue={cartValue} />}
-        {location && <Location setLocSearchToggle={setLocation} />}
-      </Container>
-    </Provider>
+          return (
+            <CardMenu
+              visibility={eatTime === props.eatTime.eatTime}
+              productName={productName}
+              image={image}
+              eatTime={eatTime}
+              rating={rating}
+              key={id}
+              seller={seller}
+              price={price}
+              currency={currency}
+            />
+          );
+        })}
+      </Body>
+      {cartValues !== 0 && <Cart />}
+      {location && <Location setLocSearchToggle={setLocation} />}
+    </Container>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  eatTime: state.eatTime,
+});
+
+export default connect(mapStateToProps, null)(App);

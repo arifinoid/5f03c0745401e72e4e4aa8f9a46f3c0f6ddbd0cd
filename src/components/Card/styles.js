@@ -4,6 +4,7 @@ import { color } from "../../globalStyle";
 
 export const Container = styled.div`
   display: flex;
+  /* display: ${({ visibility }) => (visibility ? "flex" : "none")}; */
   flex-direction: column;
   width: 100%;
   box-shadow: 0 8px 10px 0 rgba(10, 31, 68, 0.1);
@@ -28,13 +29,15 @@ export const ImageContainer = styled.div`
 `;
 
 export const CardImage = styled.img`
-  width: inherit;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 `;
 
 export const CardCaption = styled.div`
   width: calc(100% - 16px);
   line-height: 1.5;
-  padding: 0 8px;
+  padding: 16px 8px 4px;
   height: 90px;
 `;
 

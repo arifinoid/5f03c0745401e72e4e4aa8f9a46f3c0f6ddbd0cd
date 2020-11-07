@@ -20,13 +20,23 @@ import { color } from "../../globalStyle";
 
 import { addProduct } from "../../redux/actions/cart";
 
-const CardMenu = ({ cartValue, setCartValue, eatTime, image, rating }) => {
+const CardMenu = (props) => {
+  const {
+    eatTime,
+    image,
+    rating,
+    price,
+    productName,
+    seller,
+    currency,
+  } = props;
+
   const handleAdd = () => {
-    setCartValue(cartValue + 1);
+    props.addProduct(1, price);
   };
 
   return (
-    <Container>
+    <Container style={{ display: props.visibility ? "flex" : "none" }}>
       <InnerContainer>
         <ImageContainer>
           <CardImage src={image} alt={image} />
@@ -37,10 +47,17 @@ const CardMenu = ({ cartValue, setCartValue, eatTime, image, rating }) => {
             <Star>{rating}</Star>
             <StarComponent rating={rating} />
           </StarContainer>
-          <Text>Pizza Pottato Bianca</Text>
-          <SellerText>by Kulina &bull; Uptown {eatTime}</SellerText>
+          <Text>{productName}</Text>
+          <SellerText>
+            {seller} &bull; Uptown {eatTime}
+          </SellerText>
           <CardFooter>
-            <Text>Rp. 45.000</Text>
+            <Text>
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency,
+              }).format(price)}
+            </Text>
             <Button onClick={handleAdd}>
               <span>ADD</span>
               <MaterialIcon icon="add" color={color.white} size="14px" />
@@ -52,8 +69,12 @@ const CardMenu = ({ cartValue, setCartValue, eatTime, image, rating }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
 const mapDispatchToProps = {
   addProduct,
 };
 
-export default connect(null, mapDispatchToProps)(CardMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(CardMenu);

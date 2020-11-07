@@ -47,6 +47,7 @@ export const Body = styled.div`
   padding: 0 16px;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 64px;
 `;
 
 export const DateText = styled.p`

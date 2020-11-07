@@ -1,10 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { GroupButton, Button, Container } from "./styles";
 
-const TabButton = ({ eatTime, setEatTime }) => {
-  const handleClick = (d) => {
-    setEatTime(d);
+import { changeEatTime } from "../../redux/actions/changeEatTime";
+
+const TabButton = (props) => {
+  const { eatTime } = props;
+  const handleClick = (eatTime) => {
+    props.changeEatTime(eatTime);
   };
 
   return (
@@ -27,4 +31,11 @@ const TabButton = ({ eatTime, setEatTime }) => {
   );
 };
 
-export default TabButton;
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
+const mapDispatchToProps = {
+  changeEatTime,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TabButton);
